@@ -61,8 +61,8 @@ function SliderAndre(){
 
 		posicao: function(){
 			var pos = $('#slider a.ativo').index();
-			var posv = pos+1
-			$('.position').text(posv);
+			var pos = pos+1
+			$('.position').text(pos);
 		}
 	}
 
