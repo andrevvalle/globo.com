@@ -4,7 +4,7 @@ class Conexao{
 
 	public static function getConnection(){
 		
-		$connString = "mysql:host=localhost;dbname=crud";
+		$connString = "mysql:host=localhost;dbname=globo";
 		$usuario = "root";
 		$senha = "root";
 		
