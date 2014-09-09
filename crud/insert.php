@@ -21,16 +21,17 @@
 		$stmt = $con->prepare($sql);                   
 		$retorno = $stmt->execute();
 
+		$con = null;
+
 	}catch (PDOException $e) {
 		
 		$retorno = $e->getCode();
 
 	}
 
-		$con = null;
-
-	if(move_uploaded_file($tmp, $foto) && $retorno == 1) {
-		$resultado = array('return' => 0, 'resultado' => 'Image recorded successfully!', 'nome' => $name );
+	if($retorno == true) {
+		move_uploaded_file($tmp, $foto);
+		$resultado = array('return' => 0, 'resultado' => 'Image recorded successfully!');
 	}else{
 		$resultado = array('return' => 1, 'resultado' => 'Error!' );
 	}
