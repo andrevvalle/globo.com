@@ -1,4 +1,3 @@
-
 $(document).ready(function($) {
 
 	if ($('#slider a').length == 0) {
@@ -6,27 +5,26 @@ $(document).ready(function($) {
 		$('#slider').append(imagem);
 		$('.count p').text('Cadastre imagens no slide.');
 	};
-	
-	$("#form_insert").submit( function(e){
+
+	$("#form_insert").submit(function(e) {
 		e.preventDefault();
 
+		if ($("#form_insert input[type=file]").val() == "") {
 
-	 	if ($("#form_insert input[type=file]").val() == "") {
-	 		
-	 		$('.alert').remove();
-	 		
-	 		elemento = "<div class='alert alert-danger msg' role='alert'>Select an image!</div>"
-	 		
-	 		$('#form_insert').after(elemento);
+			$('.alert').remove();
+
+			elemento = "<div class='alert alert-danger msg' role='alert'>Select an image!</div>"
+
+			$('#form_insert').after(elemento);
 
 			$('.alert').fadeIn();
 			setTimeout(function() {
-		      $('.alert').fadeOut();
+				$('.alert').fadeOut();
 			}, 2000);
 
-	 	}else{
-	 		var formData = new FormData($(this)[0]);
-	 
+		} else {
+			var formData = new FormData($(this)[0]);
+
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -37,7 +35,7 @@ $(document).ready(function($) {
 				contentType: false,
 				processData: false,
 
-				success: function (data) {
+				success: function(data) {
 
 					$('#form_insert').wrap('<form>').trigger('reset');
 
@@ -47,7 +45,7 @@ $(document).ready(function($) {
 
 					if (data.return === 0) {
 						elemento = "<div class='alert alert-success msg' role='alert'>" + resultado + "</div>"
-					}else{
+					} else {
 						elemento = "<div class='alert alert-danger msg' role='alert'>" + resultado + "</div>"
 					};
 
@@ -55,100 +53,102 @@ $(document).ready(function($) {
 
 					$('.alert').fadeIn();
 					setTimeout(function() {
-					      $('.alert').fadeOut();
+						$('.alert').fadeOut();
 					}, 2000);
 
 				}
 
 			});
-	 	};
-	 
+		};
+
 	});
 
 });
 
-$('#listar').click( function(event) {
-				
+$('#listar').click(function(event) {
+
 	$.ajax({
-        type: 'GET',
-        dataType: 'json',
-        url: 'crud/select.php',	
-        async: true,
-        data: "",
-        success: function(response){
-        	 
-    	 	$('#thead').next().remove();
+		type: 'GET',
+		dataType: 'json',
+		url: 'crud/select.php',
+		async: true,
+		data: "",
+		success: function(response) {
 
-        	var tbody = $('<tbody></tbody>');
-    	 	$('#thead').after(tbody);
+			$('#thead').next().remove();
 
-            $.each(response, function (i, item){
-            	tr = $('#thead').next().append('<tr id="' + item.id + '"><th>' + item.id + '</th><th><img src="crud/' + item.foto + '" alt="foto ' + item.id + '" width="40" height="30"></th><th class="nome">' + item.foto + '</th><th><input type="button" id="del" value="x" onClick="funcEdit('+ item.id +')" /></th><th><input type="button" id="del" value="x" onClick="funcDel('+ item.id +')" /></th></tr>');
-            });
-        }
-    });
+			var tbody = $('<tbody></tbody>');
+			$('#thead').after(tbody);
+
+			$.each(response, function(i, item) {
+				tr = $('#thead').next().append('<tr id="' + item.id + '"><th>' + item.id + '</th><th><img src="crud/' + item.foto + '" alt="foto ' + item.id + '" width="40" height="30"></th><th class="nome">' + item.foto + '</th><th><input type="button" id="del" value="x" onClick="funcEdit(' + item.id + ')" /></th><th><input type="button" id="del" value="x" onClick="funcDel(' + item.id + ')" /></th></tr>');
+			});
+		}
+	});
 
 });
 
-function funcDel(id){
+function funcDel(id) {
 
-	var data = {id:id};
+	var data = {
+		id: id
+	};
 
 	$.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url: 'crud/delete.php',	
-        async: true,
-        data: data,
-        success: function(data){
+		type: 'POST',
+		dataType: 'json',
+		url: 'crud/delete.php',
+		async: true,
+		data: data,
+		success: function(data) {
 
-        	var resultado = data.resultado;
+			var resultado = data.resultado;
 
 			$('.alert').remove();
-			
+
 			var elemento = "<div class='alert alert-success msg' role='alert'>" + resultado + "</div>"
 
 			$('#listar').after(elemento);
 
 			$('.alert').fadeIn();
 			setTimeout(function() {
-			      $('.alert').fadeOut();
+				$('.alert').fadeOut();
 			}, 2000);
 
-        	$('input').closest('#'+id).fadeOut('slow', function() {
-        		$(this).remove();
-        	});
-    	 	
-        }
-    });
+			$('input').closest('#' + id).fadeOut('slow', function() {
+				$(this).remove();
+			});
+
+		}
+	});
 }
 
-function funcEdit(id){
+function funcEdit(id) {
 
 	$('#form_insert').hide();
 	$('#form_edit').show();
 	$('#id_image').val(id);
 
- 	$("#form_edit").submit( function(e){
+	$("#form_edit").submit(function(e) {
 		e.preventDefault();
-	 	
-	 	if ($("#form_edit input[type=file]").val() == "") {
-	 		
-	 		$('.alert').remove();
-	 		
-	 		elemento = "<div class='alert alert-danger msg' role='alert'>Select an image!</div>"
-	 		
-	 		$('#form_insert').after(elemento);
+
+		if ($("#form_edit input[type=file]").val() == "") {
+
+			$('.alert').remove();
+
+			elemento = "<div class='alert alert-danger msg' role='alert'>Select an image!</div>"
+
+			$('#form_insert').after(elemento);
 
 			$('.alert').fadeIn();
 			setTimeout(function() {
-			      $('.alert').fadeOut();
+				$('.alert').fadeOut();
 			}, 2000);
 
-	 	}else{
+		} else {
 
 			var formData = new FormData($(this)[0]);
-		 
+
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -158,12 +158,12 @@ function funcEdit(id){
 				cache: false,
 				contentType: false,
 				processData: false,
-				success: function (data) {
+				success: function(data) {
 
 					var resultado = data.resultado;
 
 					$('.alert').remove();
-					
+
 					var elemento = "<div class='alert alert-success msg' role='alert'>" + resultado + "</div>"
 
 					$('#listar').after(elemento);
@@ -171,24 +171,23 @@ function funcEdit(id){
 					$('.alert').fadeIn();
 
 					setTimeout(function() {
-					      $('.alert').hide();
-					      location.reload();
+						$('.alert').hide();
+						location.reload();
 					}, 1000);
 
 				}
 
 			});
-	 		
-	 	}
 
-	 
+		}
+
+
 	});
 
-	$("#new").click( function(e){
+	$("#new").click(function(e) {
 		e.preventDefault();
 		$('#form_edit').hide();
 		$('#form_insert').show();
 	});
-	
-}
 
+}

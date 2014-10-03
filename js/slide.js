@@ -84,4 +84,4 @@ function SliderAndre(){
 
 }
 
-window.addEventListener("load",SliderAndre,false);
+SliderAndre();
